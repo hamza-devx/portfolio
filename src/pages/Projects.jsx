@@ -48,7 +48,7 @@ export default function Projects({ dark, open }) {
         dark
           ? "bg-[#060b1a] text-white"
           : "bg-gradient-to-br from-slate-50 via-white to-blue-50 text-slate-900"
-      } ${open ? "ml-[280px]" : "ml-[106px]"}`}
+      } ${open ? "ml-0 lg:ml-[280px]" : "ml-0 lg:ml-[106px]"}`}
     >
       {/* background glow */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">

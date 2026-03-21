@@ -1,6 +1,5 @@
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import logo from "../assets/logo.png"
 import {
   FaHome,
   FaUser,
@@ -10,9 +9,18 @@ import {
   FaMoon,
   FaSun,
   FaBars,
+  FaTimes,
 } from "react-icons/fa"
+import logo from "../assets/logo.png"
 
-export default function Sidebar({ dark, setDark, open, setOpen }) {
+export default function Sidebar({
+  dark,
+  setDark,
+  open,
+  setOpen,
+  mobileOpen,
+  setMobileOpen,
+}) {
   const [active, setActive] = useState("Home")
 
   const items = [
@@ -23,9 +31,7 @@ export default function Sidebar({ dark, setDark, open, setOpen }) {
     { icon: <FaEnvelope />, label: "Contact", href: "#contact" },
   ]
 
-  const handleTheme = () => {
-    setDark(!dark)
-  }
+  const handleTheme = () => setDark(!dark)
 
   const sidebarClasses = dark
     ? "bg-white/10 border-white/10 text-white shadow-[0_0_40px_rgba(59,130,246,0.15)]"
@@ -39,21 +45,21 @@ export default function Sidebar({ dark, setDark, open, setOpen }) {
     ? "bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300"
     : "bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-700"
 
-  return (
-    <motion.aside
-      animate={{ width: open ? 260 : 86 }}
-      transition={{ duration: 0.35, ease: "easeInOut" }}
-      className={`fixed left-4 top-4 bottom-4 z-50 flex flex-col justify-between overflow-hidden rounded-3xl border backdrop-blur-xl ${sidebarClasses}`}
-    >
+  const SidebarContent = ({ mobile = false }) => (
+    <>
       <div>
         <div className="px-3 pt-4">
-          <div className={`flex items-center ${open ? "gap-3 px-1" : "justify-center"}`}>
-            <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl">
-                <img src={logo} alt="Hamza Logo" className="h-full w-full object-cover" />
+          <div className={`flex items-center ${open || mobile ? "gap-3 px-1" : "justify-center"}`}>
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl">
+              <img
+                src={logo}
+                alt="Hamza Logo"
+                className="h-full w-full object-cover drop-shadow-[0_0_15px_rgba(59,130,246,0.6)]"
+              />
             </div>
 
             <AnimatePresence>
-              {open && (
+              {(open || mobile) && (
                 <motion.div
                   initial={{ opacity: 0, x: -12 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -71,47 +77,52 @@ export default function Sidebar({ dark, setDark, open, setOpen }) {
           </div>
         </div>
 
-        <div className="px-3 pt-5">
-          <button
-            onClick={() => setOpen(!open)}
-            className={`mb-4 flex h-12 w-full items-center rounded-2xl border px-4 transition ${
-              dark
-                ? "border-white/10 bg-white/5 hover:bg-white/10"
-                : "border-slate-200 bg-white/60 hover:bg-slate-100"
-            } ${open ? "justify-start gap-3" : "justify-center"}`}
-          >
-            <FaBars />
-            <AnimatePresence>
-              {open && (
-                <motion.span
-                  initial={{ opacity: 0, x: -8 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -8 }}
-                  transition={{ duration: 0.2 }}
-                  className="text-sm font-medium"
-                >
-                  Menu
-                </motion.span>
-              )}
-            </AnimatePresence>
-          </button>
-        </div>
+        {!mobile && (
+          <div className="px-3 pt-5">
+            <button
+              onClick={() => setOpen(!open)}
+              className={`mb-4 flex h-12 w-full items-center rounded-2xl border px-4 transition ${
+                dark
+                  ? "border-white/10 bg-white/5 hover:bg-white/10"
+                  : "border-slate-200 bg-white/60 hover:bg-slate-100"
+              } ${open ? "justify-start gap-3" : "justify-center"}`}
+            >
+              <FaBars />
+              <AnimatePresence>
+                {open && (
+                  <motion.span
+                    initial={{ opacity: 0, x: -8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -8 }}
+                    transition={{ duration: 0.2 }}
+                    className="text-sm font-medium"
+                  >
+                    Menu
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </button>
+          </div>
+        )}
 
-        <nav className="px-3">
+        <nav className="px-3 pt-5">
           <ul className="space-y-2">
             {items.map((item, i) => (
               <li key={item.label}>
                 <a
                   href={item.href}
-                  onClick={() => setActive(item.label)}
-                  title={!open ? item.label : ""}
+                  onClick={() => {
+                    setActive(item.label)
+                    if (mobile) setMobileOpen(false)
+                  }}
+                  title={!open && !mobile ? item.label : ""}
                   className={`group relative flex items-center rounded-2xl px-4 py-3 transition-all duration-300 ${itemHover} ${
                     active === item.label ? activeItem : ""
-                  } ${open ? "gap-3" : "justify-center"}`}
+                  } ${open || mobile ? "gap-3" : "justify-center"}`}
                 >
                   {active === item.label && (
                     <motion.span
-                      layoutId="active-pill"
+                      layoutId={mobile ? "mobile-active-pill" : "active-pill"}
                       className={`absolute left-1 top-1 bottom-1 w-1 rounded-full ${
                         dark ? "bg-cyan-400" : "bg-blue-600"
                       }`}
@@ -121,7 +132,7 @@ export default function Sidebar({ dark, setDark, open, setOpen }) {
                   <span className="relative z-10 text-lg">{item.icon}</span>
 
                   <AnimatePresence>
-                    {open && (
+                    {(open || mobile) && (
                       <motion.span
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -134,7 +145,7 @@ export default function Sidebar({ dark, setDark, open, setOpen }) {
                     )}
                   </AnimatePresence>
 
-                  {!open && (
+                  {!open && !mobile && (
                     <span
                       className={`pointer-events-none absolute left-[78px] rounded-xl px-3 py-2 text-xs opacity-0 shadow-lg transition group-hover:opacity-100 ${
                         dark
@@ -159,12 +170,12 @@ export default function Sidebar({ dark, setDark, open, setOpen }) {
             dark
               ? "border-white/10 bg-white/5 hover:bg-white/10"
               : "border-slate-200 bg-white/60 hover:bg-slate-100"
-          } ${open ? "justify-start gap-3" : "justify-center"}`}
+          } ${open || mobile ? "justify-start gap-3" : "justify-center"}`}
         >
           <span className="text-lg">{dark ? <FaSun /> : <FaMoon />}</span>
 
           <AnimatePresence>
-            {open && (
+            {(open || mobile) && (
               <motion.span
                 initial={{ opacity: 0, x: -8 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -178,6 +189,69 @@ export default function Sidebar({ dark, setDark, open, setOpen }) {
           </AnimatePresence>
         </button>
       </div>
-    </motion.aside>
+    </>
+  )
+
+  return (
+    <>
+      {/* Mobile top button */}
+      <button
+        onClick={() => setMobileOpen(true)}
+        className={`fixed left-4 top-4 z-[60] flex h-12 w-12 items-center justify-center rounded-2xl border backdrop-blur-xl lg:hidden ${
+          dark
+            ? "border-white/10 bg-white/10 text-white"
+            : "border-slate-200 bg-white/80 text-slate-900"
+        }`}
+      >
+        <FaBars />
+      </button>
+
+      {/* Desktop sidebar */}
+      <motion.aside
+        animate={{ width: open ? 260 : 86 }}
+        transition={{ duration: 0.35, ease: "easeInOut" }}
+        className={`fixed left-4 top-4 bottom-4 z-50 hidden flex-col justify-between overflow-hidden rounded-3xl border backdrop-blur-xl lg:flex ${sidebarClasses}`}
+      >
+        <SidebarContent />
+      </motion.aside>
+
+      {/* Mobile overlay */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMobileOpen(false)}
+              className="fixed inset-0 z-[70] bg-black/50 backdrop-blur-sm lg:hidden"
+            />
+
+            <motion.aside
+              initial={{ x: -320, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -320, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className={`fixed left-4 top-4 bottom-4 z-[80] flex w-[280px] flex-col justify-between overflow-hidden rounded-3xl border backdrop-blur-xl lg:hidden ${sidebarClasses}`}
+            >
+              <div className="absolute right-4 top-4">
+                <button
+                  onClick={() => setMobileOpen(false)}
+                  className={`flex h-10 w-10 items-center justify-center rounded-xl border ${
+                    dark
+                      ? "border-white/10 bg-white/5 hover:bg-white/10"
+                      : "border-slate-200 bg-white/60 hover:bg-slate-100"
+                  }`}
+                >
+                  <FaTimes />
+                </button>
+              </div>
+
+              <SidebarContent mobile />
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   )
 }

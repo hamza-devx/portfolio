@@ -78,7 +78,7 @@ export default function Skills({ dark, open }) {
         dark
           ? "bg-[#050816] text-white"
           : "bg-gradient-to-br from-slate-50 via-white to-cyan-50 text-slate-900"
-      } ${open ? "ml-[280px]" : "ml-[106px]"}`}
+      } ${open ? "ml-0 lg:ml-[280px]" : "ml-0 lg:ml-[106px]"}`}
     >
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute left-[10%] top-[12%] h-72 w-72 rounded-full bg-cyan-400/15 blur-3xl" />

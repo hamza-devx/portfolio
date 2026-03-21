@@ -9,7 +9,7 @@ export default function Home({ dark, open }) {
         dark
           ? "bg-[#050816] text-white"
           : "bg-gradient-to-br from-slate-50 via-white to-blue-50 text-slate-900"
-      } ${open ? "ml-[292px]" : "ml-[118px]"}`}
+      } ${open ? "ml-0 lg:ml-[292px]" : "ml-0 lg:ml-[118px]"}`}
     >
       {/* background glow */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -27,7 +27,7 @@ export default function Home({ dark, open }) {
         } bg-[size:40px_40px]`}
       />
 
-      <section className="relative flex min-h-screen items-center px-6">
+      <section className="relative flex min-h-screen items-center px-4 pt-24 pb-10 sm:px-6 lg:px-6">
         <div className="grid w-full max-w-7xl items-center gap-14 lg:grid-cols-2">
           {/* left content */}
           <div>
@@ -50,7 +50,7 @@ export default function Home({ dark, open }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ amount: 0.2 }}
               transition={{ duration: 0.8, delay: 0.1 }}
-              className="max-w-3xl text-5xl font-black leading-tight md:text-6xl xl:text-7xl"
+              className="max-w-3xl text-[38px] font-black leading-tight sm:text-5xl md:text-6xl xl:text-7xl"
             >
               I build{" "}
               <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 bg-clip-text text-transparent">
@@ -190,7 +190,7 @@ export default function Home({ dark, open }) {
                 whileInView={{ opacity: 1, x: 0, y: 0 }}
                 viewport={{ amount: 0.2 }}
                 transition={{ delay: 0.9, duration: 0.6 }}
-                className={`absolute left-[-20px] top-[70px] rounded-2xl border px-4 py-3 backdrop-blur-xl ${
+                className={`absolute left-[-20px] top-[70px] hidden rounded-2xl border px-4 py-3 backdrop-blur-xl lg:block ${
                   dark
                     ? "border-white/10 bg-white/10 text-white"
                     : "border-slate-200 bg-white/80 text-slate-900"
@@ -211,7 +211,7 @@ export default function Home({ dark, open }) {
                 whileInView={{ opacity: 1, x: 0, y: 0 }}
                 viewport={{ amount: 0.2 }}
                 transition={{ delay: 1.05, duration: 0.6 }}
-                className={`absolute bottom-[95px] right-[-15px] rounded-2xl border px-4 py-3 backdrop-blur-xl ${
+                className={`absolute bottom-[95px] right-[-15px] hidden rounded-2xl border px-4 py-3 backdrop-blur-xl lg:block ${
                   dark
                     ? "border-white/10 bg-white/10 text-white"
                     : "border-slate-200 bg-white/80 text-slate-900"

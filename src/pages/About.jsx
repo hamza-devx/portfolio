@@ -18,7 +18,7 @@ export default function About({ dark, open }) {
         dark
           ? "bg-[#060b1a] text-white"
           : "bg-gradient-to-br from-slate-50 via-white to-blue-50 text-slate-900"
-      } ${open ? "ml-[280px]" : "ml-[106px]"}`}
+      } ${open ? "ml-0 lg:ml-[280px]" : "ml-0 lg:ml-[106px]"}`}
     >
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute left-[8%] top-[10%] h-72 w-72 rounded-full bg-cyan-400/15 blur-3xl" />

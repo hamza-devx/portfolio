@@ -10,6 +10,7 @@ import Footer from "./components/Footer"
 export default function App() {
   const [dark, setDark] = useState(true)
   const [open, setOpen] = useState(true)
+  const [mobileOpen, setMobileOpen] = useState(false)
 
   return (
     <div className={dark ? "dark" : ""}>
@@ -18,6 +19,8 @@ export default function App() {
         setDark={setDark}
         open={open}
         setOpen={setOpen}
+        mobileOpen={mobileOpen}
+        setMobileOpen={setMobileOpen}
       />
 
       <Home dark={dark} open={open} />
